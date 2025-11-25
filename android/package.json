@@ -1,0 +1,27 @@
+{
+  "name": "mario-maze-race",
+  "version": "1.0.0",
+  "description": "Mario-themed maze game for Android",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "game",
+    "mario",
+    "maze",
+    "cordova",
+    "android"
+  ],
+  "author": "Mario Maze Team",
+  "license": "MIT",
+  "dependencies": {
+    "cordova-android": "^12.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {}
+  }
+}

@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 100%;
+    width: 100%;
+}
+
+h1 {
+    color: #DC143C;
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.info {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 0.9em;
+}
+
+#gameCanvas {
+    border: 3px solid #333;
+    border-radius: 10px;
+    display: block;
+    margin: 10px auto;
+    background: #87CEEB;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+    height: auto;
+}
+
+.touch-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.control-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    background: #DC143C;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.1s;
+    user-select: none;
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+    background: #B01030;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.controls {
+    margin-top: 15px;
+}
+
+.btn {
+    background: #DC143C;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: scale(0.95);
+    background: #B01030;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.game-over.hidden {
+    display: none;
+}
+
+.game-over-content {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideIn 0.5s;
+    max-width: 90%;
+}
+
+@keyframes slideIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.game-over-content h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #DC143C;
+}
+
+.game-over-content .btn {
+    margin-top: 15px;
+}

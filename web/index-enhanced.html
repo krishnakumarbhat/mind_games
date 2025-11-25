@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mario Maze Race - Enhanced ML Edition</title>
+    <link rel="stylesheet" href="styles-enhanced.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🍄 Mario Maze Race - ML Edition 🍄</h1>
+        
+        <!-- Level Selection Screen -->
+        <div id="levelSelect" class="level-select">
+            <h2>Select Your Challenge</h2>
+            <div class="info-panel">
+                <p>Beat AI opponents using different algorithms!</p>
+                <p>Complete levels to unlock advanced AI challenges.</p>
+                <p>Your gameplay trains the final ML models! 🤖</p>
+            </div>
+            
+            <div id="levelGrid" class="level-grid"></div>
+            
+            <div class="action-buttons">
+                <button id="trainModelsBtn" class="btn btn-purple">🤖 Train ML Models</button>
+                <button id="showStatsBtn" class="btn btn-blue">📊 View Statistics</button>
+            </div>
+            
+            <div id="trainingStatus" class="training-status" style="display: none;">
+                Training models... Please wait.
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="game-screen">
+            <div class="level-info">
+                <div id="currentLevelDisplay" class="current-level">Level 1: A* Pathfinding</div>
+                <div id="levelDescription" class="level-description">Optimal pathfinding algorithm</div>
+                <button id="backToMenuBtn" class="btn btn-small">📋 Back to Levels</button>
+            </div>
+            
+            <canvas id="gameCanvas"></canvas>
+            
+            <div class="game-controls">
+                <div class="controls-info">
+                    <p><strong>Controls:</strong> Arrow Keys or WASD</p>
+                    <p><strong>Goal:</strong> Reach the green square before the AI!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div id="gameOver" class="game-over hidden">
+            <div class="game-over-content">
+                <h2 id="winnerText"></h2>
+                <div id="gameStats" class="game-stats"></div>
+                <div class="game-over-buttons">
+                    <button id="restartBtn" class="btn">🔄 Restart Level</button>
+                    <button id="newMazeBtn" class="btn btn-secondary">📋 Level Select</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load all scripts -->
+    <script src="maze.js"></script>
+    <script src="ai-algorithms.js"></script>
+    <script src="data-collector.js"></script>
+    <script src="ml-models.js"></script>
+    <script src="game-enhanced.js"></script>
+</body>
+</html>
