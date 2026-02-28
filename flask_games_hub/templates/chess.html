@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>Chess vs Computer</h2>
+    <p>{{ state.message }}</p>
+
+    <form method="post" class="inline">
+        <input type="hidden" name="action" value="new">
+        <button type="submit" class="btn secondary">New Game</button>
+    </form>
+
+    <table class="chess-board" aria-label="chess-board">
+        {% for row in rows %}
+        <tr>
+            {% for cell in row %}
+            <td class="{% if cell.is_light %}light{% else %}dark{% endif %} {% if state.selected == cell.square %}selected{% endif %} {% if cell.square in state.legal_destinations %}legal{% endif %}">
+                <form method="post" class="inline">
+                    <input type="hidden" name="action" value="click">
+                    <input type="hidden" name="square" value="{{ cell.square }}">
+                    <button class="chess-cell-btn" type="submit" {% if state.game_over %}disabled{% endif %}>
+                        {% if cell.piece %}
+                            <span class="chess-piece {% if cell.is_white_piece %}white-piece{% else %}black-piece{% endif %}">{{ cell.piece }}</span>
+                        {% else %}
+                            <span class="empty-marker">·</span>
+                        {% endif %}
+                    </button>
+                </form>
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a class="btn secondary" href="{{ url_for('index') }}">Back to game selector</a></p>
+</section>
+{% endblock %}

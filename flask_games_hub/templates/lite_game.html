@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>{{ game.name }} (Lite Edition)</h2>
+    <p>{{ state.message }}</p>
+
+    <form method="post" class="inline">
+        <input type="hidden" name="action" value="new">
+        <button type="submit" class="btn secondary">New Game</button>
+    </form>
+
+    {% if mode == 'duel' %}
+        <div class="card">
+            <p><strong>You:</strong> {{ state.player_score }} cells</p>
+            <p><strong>Computer:</strong> {{ state.ai_score }} cells</p>
+            <p><strong>Round:</strong> {{ state.round }}</p>
+            <p><strong>Current move style:</strong> {{ state.selected_move }}</p>
+        </div>
+
+        <h3>Board</h3>
+        <table class="duel-board" aria-label="duel-board">
+            {% for row in range(state.board_size) %}
+            <tr>
+                {% for col in range(state.board_size) %}
+                <td>
+                    {% if state.board[row][col] == 1 %}
+                        <span class="duel-piece human">●</span>
+                    {% elif state.board[row][col] == -1 %}
+                        <span class="duel-piece ai">●</span>
+                    {% elif not state.game_over %}
+                        <form method="post" class="inline">
+                            <input type="hidden" name="action" value="place">
+                            <input type="hidden" name="move" value="{{ state.selected_move }}">
+                            <input type="hidden" name="row" value="{{ row }}">
+                            <input type="hidden" name="col" value="{{ col }}">
+                            <button class="cell-btn" type="submit">·</button>
+                        </form>
+                    {% else %}
+                        <span class="duel-empty">·</span>
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% if not state.game_over %}
+            <h3>Pick move style</h3>
+            <div class="moves">
+            {% for item in state.actions %}
+                <form method="post" class="inline">
+                    <input type="hidden" name="action" value="choose_move">
+                    <input type="hidden" name="move" value="{{ item[0] }}">
+                    <button class="btn {% if state.selected_move == item[0] %}secondary{% endif %}" type="submit">{{ item[0] }} (ATK {{ item[1] }}, FLIP {{ item[2] }})</button>
+                </form>
+            {% endfor %}
+            </div>
+        {% endif %}
+
+    {% elif mode == 'cards' %}
+        <div class="card">
+            <p><strong>Round:</strong> {{ state.round }}</p>
+            <p><strong>Score:</strong> You {{ state.player_score }} - {{ state.ai_score }} Computer</p>
+            <p><strong>Your hand:</strong> {{ state.player_hand if state.player_hand else '-' }}</p>
+            <p><strong>Computer hand:</strong> {{ state.ai_hand if state.ai_hand else '-' }}</p>
+        </div>
+        {% if not state.game_over %}
+            <form method="post" class="inline">
+                <input type="hidden" name="action" value="deal">
+                <button class="btn" type="submit">Deal Round</button>
+            </form>
+        {% endif %}
+
+    {% elif mode == 'sliding' %}
+        <div class="slide-grid">
+            {% for row in state.board %}
+                {% for value in row %}
+                    <div class="tile">{{ value if value != 0 else '' }}</div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+        {% if not state.game_over %}
+        <div class="moves">
+            {% for direction in ['left', 'right', 'up', 'down'] %}
+                <form method="post" class="inline">
+                    <input type="hidden" name="action" value="{{ direction }}">
+                    <button class="btn" type="submit">{{ direction|capitalize }}</button>
+                </form>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    {% elif mode == 'puzzle' and slug == 'sudoku' %}
+        <table class="checkers-board" aria-label="sudoku-board">
+            {% for row in range(4) %}
+            <tr>
+                {% for col in range(4) %}
+                <td class="light">{{ state.board[row][col] if state.board[row][col] != 0 else '.' }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% if not state.game_over %}
+        <form method="post" class="moves">
+            <input type="hidden" name="action" value="set">
+            <label>Row <input name="row" type="number" min="0" max="3" required></label>
+            <label>Col <input name="col" type="number" min="0" max="3" required></label>
+            <label>Value <input name="value" type="number" min="1" max="4" required></label>
+            <button class="btn" type="submit">Set</button>
+        </form>
+        {% endif %}
+
+    {% elif mode == 'puzzle' and slug == 'minesweeper' %}
+        <table class="checkers-board" aria-label="minesweeper-board">
+            {% for row in range(state.size) %}
+            <tr>
+                {% for col in range(state.size) %}
+                <td class="light">
+                    {% if state.revealed[row][col] %}
+                        {% if state.game_over and [row, col] in state.mines %}
+                            *
+                        {% else %}
+                            {{ mines_counts[row][col] }}
+                        {% endif %}
+                    {% elif state.game_over and [row, col] in state.mines %}
+                        *
+                    {% else %}
+                        {% if not state.game_over %}
+                            <form method="post" class="inline">
+                                <input type="hidden" name="action" value="reveal">
+                                <input type="hidden" name="row" value="{{ row }}">
+                                <input type="hidden" name="col" value="{{ col }}">
+                                <button class="btn" type="submit">?</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% elif mode == 'puzzle' and slug == 'rubiks-cube' %}
+        <div class="card">
+            <p><strong>Target:</strong> {{ state.target }}</p>
+            <p><strong>Current:</strong> {{ state.current }}</p>
+        </div>
+
+        {% if not state.game_over %}
+        <div class="moves">
+            <form method="post" class="inline">
+                <input type="hidden" name="action" value="rotate">
+                <button class="btn" type="submit">Rotate Left</button>
+            </form>
+            <form method="post" class="inline">
+                <input type="hidden" name="action" value="rotate-back">
+                <button class="btn" type="submit">Rotate Right</button>
+            </form>
+            <form method="post" class="inline">
+                <input type="hidden" name="action" value="swap">
+                <button class="btn" type="submit">Swap First Two</button>
+            </form>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <p><a class="btn secondary" href="{{ url_for('index') }}">Back to game selector</a></p>
+</section>
+{% endblock %}

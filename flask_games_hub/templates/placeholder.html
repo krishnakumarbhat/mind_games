@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>{{ game.name }}</h2>
+    <p>This game has its own separate folder and route, and is ready for implementation next.</p>
+    <p>Return to the home page to pick another game.</p>
+    <a class="btn" href="{{ url_for('index') }}">Back to game selector</a>
+</section>
+{% endblock %}

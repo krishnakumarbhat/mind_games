@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>Checkers vs Computer</h2>
+    <p>{{ state.message }}</p>
+
+    <form method="post" class="inline">
+        <input type="hidden" name="action" value="new">
+        <button type="submit" class="btn secondary">New Game</button>
+    </form>
+
+    <table class="checkers-board" aria-label="checkers-board">
+        {% for row in range(8) %}
+        <tr>
+            {% for col in range(8) %}
+                {% set value = state.board[row][col] %}
+                {% set dark = (row + col) % 2 == 1 %}
+                <td class="{% if dark %}dark{% else %}light{% endif %}">
+                    {% if value != 0 %}
+                        {% if value > 0 %}
+                            <span class="piece human">{% if value == 2 %}♔{% else %}●{% endif %}</span>
+                        {% else %}
+                            <span class="piece ai">{% if value == -2 %}♚{% else %}●{% endif %}</span>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if not state.game_over %}
+    <h3>Your legal moves</h3>
+    <div class="moves">
+        {% for move in legal %}
+            <form method="post" class="inline">
+                <input type="hidden" name="action" value="move">
+                <input type="hidden" name="move_index" value="{{ loop.index0 }}">
+                <button class="btn" type="submit">
+                    ({{ move['from'][0] }},{{ move['from'][1] }}) → ({{ move['to'][0] }},{{ move['to'][1] }})
+                    {% if move.captures %} capture{% endif %}
+                </button>
+            </form>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

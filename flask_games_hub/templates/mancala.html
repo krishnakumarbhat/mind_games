@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>Mancala vs Computer</h2>
+    <p>{{ state.message }}</p>
+
+    <form method="post" class="inline">
+        <input type="hidden" name="action" value="new">
+        <button type="submit" class="btn secondary">New Game</button>
+    </form>
+
+    <div class="mancala-wrap">
+        <div class="store">
+            <span>Computer Store</span>
+            <strong>{{ state.board[ai_store] }}</strong>
+        </div>
+
+        <div class="pits">
+            <div class="row top">
+                {% for pit in ai_pits|reverse %}
+                    <div class="pit disabled">{{ state.board[pit] }}</div>
+                {% endfor %}
+            </div>
+            <div class="row bottom">
+                {% for pit in human_pits %}
+                    <form method="post">
+                        <input type="hidden" name="action" value="move">
+                        <input type="hidden" name="pit" value="{{ pit }}">
+                        <button class="pit {% if pit not in legal_human_moves or state.game_over %}disabled{% endif %}" type="submit" {% if pit not in legal_human_moves or state.game_over %}disabled{% endif %}>
+                            {{ state.board[pit] }}
+                        </button>
+                    </form>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="store">
+            <span>Your Store</span>
+            <strong>{{ state.board[human_store] }}</strong>
+        </div>
+    </div>
+</section>
+{% endblock %}

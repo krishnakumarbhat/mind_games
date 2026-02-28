@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>All Games</h2>
+    <div class="grid">
+        {% for game in games %}
+        <article class="card">
+            <h3>{{ game.name }}</h3>
+            <p class="status ready">Playable now</p>
+            {% if game.route == 'lite.play_lite_game' %}
+                <a class="btn" href="{{ url_for(game.route, slug=game.slug) }}">Play</a>
+            {% else %}
+                <a class="btn" href="{{ url_for(game.route) }}">Play</a>
+            {% endif %}
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
